@@ -15,6 +15,24 @@ namespace Statistics
     }
     public class StatsComputer
     {
+        public float Max(float max,float number)
+        {
+            if (number > max)
+            {
+                max = number;
+            }
+            return max;
+        }
+
+        public float Min(float min,float number)
+        {
+            if (number < min)
+            {
+                min = number;
+            }
+            return min;
+
+        }
         public Stats CalculateStatistics(List<float> numbers) {
             float average = 0;
             float countOfNumber= 0;
@@ -29,14 +47,8 @@ namespace Statistics
                     {
                         countOfNumber += 1;
                         average = numbers[i] + average;
-                        if (numbers[i] > max)
-                        {
-                            max = numbers[i];
-                        }
-                        if (numbers[i] < min)
-                        {
-                            min = numbers[i];
-                        }
+                        max=Max(max, numbers[i]);
+                        min=Min(min, numbers[i]);   
                     }
                 }
                average = average / countOfNumber;
