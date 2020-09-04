@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using System.Collections.Generic;
 using Statistics;
 
 namespace Statistics.Test
@@ -7,24 +8,42 @@ namespace Statistics.Test
     public class StatsUnitTest
     {
         [Fact]
-        public void ReportsAverageMinMax()
+        public void WhenUserInputsAnNonEmptyListOfFloatStatisticsareProduced()
         {
             var statsComputer = new StatsComputer();
             var computedStats = statsComputer.CalculateStatistics(
-                new List<___>{1.5, 8.9, 3.2, 4.5});
+                new List<float>{1.5F, 8.9F, 3.2F, 4.5F});
             float epsilon = 0.001F;
-            Assert.True(Math.Abs(statsComputer.average - 4.525) <= epsilon);
-            Assert.True(Math.Abs(statsComputer.max - 8.9) <= epsilon);
-            Assert.True(Math.Abs(statsComputer.min - 1.5) <= epsilon);
+
+            Assert.True(Math.Abs(computedStats.average - 4.525) <= epsilon);
+            Assert.True(Math.Abs(computedStats.max - 8.9) <= epsilon);
+            Assert.True(Math.Abs(computedStats.min - 1.5) <= epsilon);
         }
-        public void ReportsNaNForEmptyInput()
+        [Fact]
+        public void WhenUserInputsAEmptyListOfFloatNANisReturned()
         {
             var statsComputer = new StatsComputer();
             var computedStats = statsComputer.CalculateStatistics(
-                new List<___>{});
+                new List<float> { });
             //All fields of computedStats (average, max, min) must be
-            //Double.NaN (not-a-number), as described in
-            //https://docs.microsoft.com/en-us/dotnet/api/system.double.nan?view=netcore-3.1
+
+            Assert.True(float.IsNaN(computedStats.average));
+            Assert.True(float.IsNaN(computedStats.max));
+            Assert.True(float.IsNaN(computedStats.min));
         }
+
+        [Fact]
+        public void WhenUserInputsAnNonEmptyListOfFloatWithSomeNaNInputsStatisticsareProducedForTheNonNaNInput()
+        {
+            var statsComputer = new StatsComputer();
+            var computedStats = statsComputer.CalculateStatistics(
+                new List<float> { 1.5F, 8.9F,float.NaN ,3.2F, 4.5F });
+            float epsilon = 0.001F;
+
+            Assert.True(Math.Abs(computedStats.average - 4.525) <= epsilon);
+            Assert.True(Math.Abs(computedStats.max - 8.9) <= epsilon);
+            Assert.True(Math.Abs(computedStats.min - 1.5) <= epsilon);
+        }
+
     }
 }
