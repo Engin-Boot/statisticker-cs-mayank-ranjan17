@@ -6,11 +6,20 @@ namespace Statistics
     public class Stats
     {
         public float average, max, min;
-        public Stats(float average,float max,float min)
+        public Stats(float avg,float max,float min)
         {
-            this.average = average;
-            this.max = max;
-            this.min = min;
+            if (float.IsNaN(avg))
+            {
+                this.average = float.NaN;
+                this.max = float.NaN;
+                this.min = float.NaN;
+            }
+            else
+            {
+                this.average = avg;
+                this.max = max;
+                this.min = min;
+            }
         }
     }
     public class StatsComputer
@@ -38,11 +47,9 @@ namespace Statistics
             float countOfNumber= 0;
             float max = -10000;
             float min = 10000;
-            bool arrayisempty = true;
                 for (int i = 0; i < numbers.Count; i++)
                 {
                   
-                    arrayisempty = false;
                     if (!float.IsNaN(numbers[i]))
                     {
                         countOfNumber += 1;
@@ -51,13 +58,8 @@ namespace Statistics
                         min=Min(min, numbers[i]);   
                     }
                 }
+
                average = average / countOfNumber;
-               if(arrayisempty)
-               {
-                 average = float.NaN;
-                 max = float.NaN;
-                 min = float.NaN;
-               }
                Stats stats = new Stats(average, max, min);
                return stats;
         }
