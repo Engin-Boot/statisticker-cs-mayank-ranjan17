@@ -30,6 +30,7 @@ namespace Statistics
             {
                 max = number;
             }
+            
             return max;
         }
 
